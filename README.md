@@ -1,155 +1,239 @@
-project:
-  title: "Heart Health Alert System"
-  subtitle: "Intelligent Heart Attack Prediction Pipeline Using AWS EMR, SageMaker, Lambda, SNS, Athena, and S3"
-  author: "YOUR NAME"
-  institution: "Arizona State University"
-  course: "IFT 512 – Advanced Big Data Analytics / AI"
-  instructor: "Durgesh Sharma"
+💓 Heart Health Alert System
+Using AWS EMR, SageMaker, Lambda, SNS, Athena, and S3
 
-description: |
-  This project builds an end-to-end automated healthcare analytics system on AWS.
-  It simulates real patient vitals, preprocesses data using EMR Spark, trains and deploys an
-  XGBoost model with SageMaker, performs real-time inference with Lambda, sends
-  high-risk alerts with SNS, and runs analytical queries using Athena.
+🧭 Project Overview
 
-repository_structure:
-  phase1:
-    files:
-      - phase1/generate_simulated.py
-      - phase1/upload_to_s3.sh
-    purpose: "Create simulated 7-day vitals and upload datasets to S3."
+This project implements a complete cloud-based intelligent health monitoring and alert system using AWS.
+It simulates patient vitals, processes them at scale, trains a predictive model, and sends real-time alerts for high-risk patients.
 
-  phase2:
-    files:
-      - phase2/spark/main.py
-    purpose: "Run Spark job on EMR to aggregate vitals, join historical data, and output final dataset."
+The system integrates several AWS services to build an end-to-end ML pipeline:
 
-  phase3:
-    files:
-      - phase3/preprocess.py
-      - phase3/sagemaker_train.py
-      - phase3/notebook/Yourname_HeartAttack_Prediction.ipynb
-    purpose: "Preprocess, train, evaluate, and deploy XGBoost model using SageMaker."
+Amazon S3 – Data storage and ingestion
 
-  phase4:
-    files:
-      - phase4/lambda_function.py
-    purpose: "Lambda pulls processed data from S3, invokes deployed model, generates predictions, and sends SNS alerts."
+AWS EMR (Spark) – Big data processing
 
-  phase5:
-    files:
-      - phase5/athena_ddls.sql
-    purpose: "Create Athena external tables and run analytical SQL queries on predictions and vitals."
+Amazon SageMaker – Model training & endpoint deployment
 
-  documentation:
-    - docs/project_report.docx
-    - docs/screenshots/
+AWS Lambda – Automated prediction
 
-execution_order:
-  step1:
-    name: "Generate Simulated Data"
-    file: "phase1/generate_simulated.py"
-    run_command: "python3 generate_simulated.py"
-    run_where: "Local machine or AWS Cloud9"
-    produces:
-      - "simulated_vitals.csv"
-    description: |
-      Generates synthetic vitals for 20 patients over 7 days.
-      Mimics data from wearable healthcare devices.
+Amazon SNS – Email alerting
 
-  step2:
-    name: "Upload Data to S3"
-    file: "phase1/upload_to_s3.sh"
-    run_command: "./upload_to_s3.sh"
-    run_where: "Local terminal / Cloud9"
-    uploads_to:
-      - "s3://<bucket>/raw/simulated/"
-      - "s3://<bucket>/raw/historical/"
-    description: |
-      Uploads simulated vitals and historical dataset into respective S3 folders,
-      preparing the data for EMR processing.
+Amazon Athena – Analytics on predictions & vitals
 
-  step3:
-    name: "Run Spark Job on EMR"
-    file: "phase2/spark/main.py"
-    run_command: "spark-submit main.py"
-    run_where: "EMR Master Node or EMR Step"
-    reads:
-      - "raw/simulated/"
-      - "raw/historical/"
-    produces:
-      - "processed/final_health_dataset_csv/"
-    description: |
-      Spark aggregates 7-day vitals into weekly averages, cleans historical data,
-      and performs a left join to keep only the 20 simulated patients.
-      Outputs machine-learning-ready dataset into processed/ folder in S3.
+This architecture reflects a real-world remote-health monitoring system used in modern hospitals.
 
-  step4:
-    name: "Preprocess, Train & Deploy ML Model"
-    files:
-      - "phase3/notebook/Yourname_HeartAttack_Prediction.ipynb"
-      - "phase3/preprocess.py"
-    run_where: "Amazon SageMaker Notebook"
-    produces:
-      - "XGBoost trained model"
-      - "SageMaker real-time inference endpoint"
-      - "preprocess/feature_list.txt"
-    description: |
-      Loads processed dataset from S3, preprocesses features,
-      trains an XGBoost model, deploys an inference endpoint, and generates feature_list.txt
-      to ensure Lambda uses identical feature order.
+📊 Final Deliverables
+🔹 End-to-End AWS ML Pipeline
 
-  step5:
-    name: "Lambda Real-Time Prediction & SNS Alerts"
-    file: "phase4/lambda_function.py"
-    run_where: "AWS Lambda Console"
-    triggers: "Manual test or automated scheduled invocation"
-    reads:
-      - "processed/final_health_dataset_csv/"
-      - "preprocess/feature_list.txt"
-    writes:
-      - "predictions/heart_attack_predictions_<timestamp>.csv"
-    alerts:
-      - "SNS email to subscribed doctors"
-    description: |
-      Lambda preprocesses new data rows, invokes the SageMaker endpoint,
-      writes predictions to S3, and triggers email alerts for high-risk patients (score > 0.45).
+A fully functional architecture performing:
 
-  step6:
-    name: "Analytics in Athena"
-    file: "phase5/athena_ddls.sql"
-    run_where: "Athena Query Editor"
-    description: |
-      Creates two external tables (processed vitals + predictions) and runs queries
-      to analyze risk patterns, age groups, sleep correlation, and more.
+Data ingestion
 
-outputs:
-  s3_folders:
-    - "raw/historical/"
-    - "raw/simulated/"
-    - "processed/final_health_dataset_csv/"
-    - "preprocess/feature_list.txt"
-    - "predictions/*.csv"
-  alerts:
-    - "SNS email notifications for HIGH-RISK patients"
-  analytics:
-    - "Athena dashboards and query results"
+Spark preprocessing
 
-screenshots_required:
-  S1: "Upload simulated data to S3"
-  S2: "EMR cluster creation"
-  S3: "Processed data folder in S3"
-  S4: "SageMaker model training & endpoint"
-  S5: "SNS topic"
-  S6: "SNS alert email"
-  S7: "Athena query results"
+XGBoost model training
 
-video:
-  description: "5–6 minute project walkthrough including architecture, workflow, AWS execution, model training, alerts, and analytics."
-  included_in: "docs/project_report.docx"
+Real-time model inference
 
-license: "MIT License"
-acknowledgements:
-  - "Arizona State University"
-  - "IFT 512 – Advanced Big Data Analytics"
-  - "Instructor: Durgesh Sharma"
+Automated alerts
+
+SQL analytics and reporting
+
+🔹 SNS Alert Example
+
+Screenshot: (S6 goes here — high-risk patient alert email)
+
+🔹 Athena Analytics Output
+
+Screenshot: (S7 — SQL query results)
+
+🧩 Project Phases
+Phase I – Data Generation & Ingestion
+
+Generated 7-day simulated patient vitals
+
+Uploaded all raw data to Amazon S3
+
+Historical dataset + simulated vitals stored in /raw folders
+
+📄 Files Included:
+
+phase1/generate_simulated.py
+phase1/upload_to_s3.sh
+
+Phase II – Data Processing on EMR (Spark)
+
+Aggregated daily vitals into weekly averages
+
+Cleaned and transformed historical dataset
+
+Performed left join on Patient ID
+
+Wrote final ML-ready dataset back to S3
+
+📄 Files Included:
+
+phase2/spark/main.py
+
+Phase III – SageMaker Training & Deployment
+
+Preprocessed the dataset (split BP, one-hot encoding, drop identifiers)
+
+Trained an XGBoost binary classifier
+
+Deployed a real-time inference endpoint
+
+Created feature_list.txt for Lambda preprocessing
+
+📄 Files Included:
+
+phase3/preprocess.py
+phase3/sagemaker_train.py
+phase3/notebook/Yourname_HeartAttack_Prediction.ipynb
+
+Phase IV – Automated Prediction & SNS Alerts
+
+Lambda retrieves processed CSV from S3
+
+Preprocesses each row using feature_list.txt
+
+Sends rows to SageMaker endpoint for real-time scoring
+
+Stores prediction results in S3 under /predictions
+
+Sends SNS email alert for any patient with risk > 0.45
+
+📄 Files Included:
+
+phase4/lambda_function.py
+
+Phase V – SQL Analytics using Athena
+
+Created two external tables:
+
+Processed vitals data
+
+Prediction results
+
+Executed advanced SQL queries for:
+
+High-risk detection
+
+Age group risk analysis
+
+Sleep-hour correlation
+
+Activity vs heart rate
+
+📄 Files Included:
+
+phase5/athena_ddls.sql
+
+⚙️ Tools & Technologies Used
+
+AWS S3 – Data storage
+
+AWS EMR (Spark) – Large-scale preprocessing
+
+Amazon SageMaker – Machine learning pipeline
+
+AWS Lambda – Automated inference
+
+Amazon SNS – Email alert notifications
+
+Amazon Athena – Analytics engine
+
+Python (boto3, pandas, PySpark)
+
+🧠 Dataset Description
+Simulated Dataset (Phase 1)
+
+20 unique patient IDs
+
+7 days of vitals per patient
+
+Columns:
+
+Heart Rate
+
+BP Systolic / Diastolic
+
+Sleep Hours
+
+Physical Activity
+
+Timestamp
+
+Historical Dataset
+
+Includes:
+
+Age, Sex, Cholesterol, Diabetes
+
+Stress Level, BMI, Exercise Hours
+
+Heart Attack Risk label
+
+👥 Intended Users
+
+Cardiologists
+
+Healthcare providers
+
+Researchers & analysts
+
+Medical administrators
+
+Insurance risk analysts
+
+💡 Insights Provided
+
+Identification of high-risk patients
+
+Trends by age group and demographics
+
+Sleep, activity, and heart rate correlation with predicted risk
+
+Model-driven alerts for early intervention
+
+📂 Repository Structure
+phase1/
+   ├─ generate_simulated.py
+   └─ upload_to_s3.sh
+
+phase2/
+   └─ spark/main.py
+
+phase3/
+   ├─ preprocess.py
+   ├─ sagemaker_train.py
+   └─ notebook/Yourname_HeartAttack_Prediction.ipynb
+
+phase4/
+   └─ lambda_function.py
+
+phase5/
+   └─ athena_ddls.sql
+
+docs/
+   ├─ project_report.docx
+   └─ screenshots/
+
+README.md
+LICENSE
+.gitignore
+
+🔗 Project Repository
+
+Add your link here once uploaded:
+👉 https://github.com/YOURUSERNAME/heart-health-alert
+
+🎞️ Project Video
+
+Include in your project_report.docx (Google Drive / Zoom / YouTube link)
+
+🎓 Submitted By
+
+YOUR NAME
+IFT 512 – Advanced Big Data Analytics / AI
+Arizona State University | Fall 2025
