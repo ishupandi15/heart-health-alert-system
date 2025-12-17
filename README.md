@@ -75,7 +75,6 @@ phase2/spark/main.py
 ```
 phase3/preprocess.py
 phase3/sagemaker_train.py
-phase3/notebook/Yourname_HeartAttack_Prediction.ipynb
 ```
 
 ---
