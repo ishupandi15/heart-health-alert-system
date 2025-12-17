@@ -194,7 +194,7 @@ LICENSE
 ---
 
 ## 🔗 Project Repository  
-**[https://github.com/YOURUSERNAME/heart-health-alert](https://github.com/ishupandi15/heart-health-alert-system)**
+**[https://github.com/ishupandi15/heart-health-alert-system](https://github.com/ishupandi15/heart-health-alert-system)**
 
 ---
 
