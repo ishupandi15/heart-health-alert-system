@@ -199,6 +199,6 @@ LICENSE
 ---
 
 ## 🎞️ Project Video  
-Link added [in `project_report.docx`.](https://github.com/ishupandi15/heart-health-alert-system)
+Link added (https://github.com/ishupandi15/heart-health-alert-system)
 
 ---
