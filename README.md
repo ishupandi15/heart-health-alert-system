@@ -199,6 +199,6 @@ LICENSE
 ---
 
 ## 🎞️ Project Video  
-Link added (https://github.com/ishupandi15/heart-health-alert-system)
+Link added (https://drive.google.com/file/d/1Dufiq7PPVSJvQpnGvwFblkigo6T0HkJ5/view?usp=drivesdk)
 
 ---
